@@ -11,5 +11,5 @@
 
 * DB Setup
 
-  create user fakere with password 'fakere';
+  create user fakere with login, encrypted password 'fakere';
   create database fakere with owner=fakere,encoding=utf8;
