@@ -1,0 +1,62 @@
+#+title: 3rd session
+#+subtitle: faKere, a functional to-do list
+
+
+* Intro
+
+To implement a small single-user TO-DO list as a web application. To be able
+to focus on learning, we will use the provided skeleton app and work in
+_fill-in-the-blanks_ mode.
+
+** Repo structure
+
+   The repo has some intereting tags
+
+   - =bare-bones= web infrastructure in place. No features.
+   - =starting-point= sample features implemented.
+
+** Agenda
+
+   - Show the starting point (=starting-point= tag) while explaining
+     - Recap of LISP/clojure syntax
+     - Recap of lists, vectors and maps
+     - Functions and destructuring
+     - Namespaces
+     - Your first 10' with web apps in clojure
+       - ring apps from =bare-bones=
+       - compojure from =starting-point=
+     - Your first 10' with clojurescript and re-frame (from =starting-point=)
+     - Q&A
+     - Code the features:
+       - Create a new task
+       - Mark a task as completed
+       - Delete a task
+
+* Starting
+
+  1. clone the repo
+  2. start the database
+  3. =lein trampoline run=
+  4. Implement the user stories 
+
+
+* Reference
+
+  - [[https://github.com/ring-clojure/ring/wiki/Concepts][Ring concepts]]
+
+
+
+
+
+* Recap: LISP, clojure syntax
+
+* Recap: Lists, vectors and maps
+
+* Functions and descructuring
+
+* Namespaces
+
+* DB Setup
+
+  create user fakere with login, encrypted password 'fakere';
+  create database fakere with owner=fakere,encoding=utf8;
