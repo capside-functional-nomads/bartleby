@@ -1,33 +1,16 @@
 # bartleby
 
-A proto-typical todo application.
-Obviously, the name comes after Bartleby the scrivener
+A proto-typical TODO application.
 
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar bartleby-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
+Obviously, the name comes after [Bartleby the scrivener](https://en.wikisource.org/wiki/Bartleby_the_Scrivener).
+If you're wondering *why*, then you should refuse to do any more work and read that short story first.
+It's better to know Bartleby than the Curry-Howard isomorphism.
 
 ### Bugs
 
-...
+We don't have any.
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+Yet.
 
 ## License
 
