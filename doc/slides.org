@@ -1,0 +1,15 @@
+#+title: 3rd session
+#+subtitle: faKere, a functional to-do list
+
+* Recap: LISP, clojure syntax
+
+* Recap: Lists, vectors and maps
+
+* Functions and descructuring
+
+* Namespaces
+
+* DB Setup
+
+  create user fakere with password 'fakere';
+  create database fakere with owner=fakere,encoding=utf8;
