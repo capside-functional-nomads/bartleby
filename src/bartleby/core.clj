@@ -1,44 +1,64 @@
 (ns bartleby.core
-  (:require [immutant.web :as server]
-            [taoensso.timbre :as timbre :refer [log]]
+  (:require [taoensso.timbre :refer [log]]
+            [com.stuartsierra.component :as component]
             [cprop.core :refer [load-config]]
-            [ring.logger :as logger]
             [bartleby.db.migrations :as migrations]
-            [bartleby.handler :refer [app]])
-  (:gen-class))
+            [bartleby.server :as server]
+            [bartleby.db :as db]
+            [clojure.tools.namespace.repl :refer [refresh]]))
 
-(def entry-point (logger/wrap-with-logger app))
+              
+(defn new-system
+  [& opts]
+  (let [config (merge (load-config) (or opts {}))
+        prod? (:prod? config)]
+    (component/system-map
+     :migrator (migrations/migrator (:migrator config))
+     :db (db/connection (:db config))
+     :web (component/using
+           (server/make prod?)
+           [:db])
+     :all (component/using {} [:web :migrator]))))
 
-(defn start-production-server!
-  [state config]
-  (timbre/log :info "Starting server in production mode")
-  (swap! state (server/run #'entry-point)))
+(def system nil)
 
-(defn start-development-server!
-  [state config]
-  (timbre/log :info "Performing db migrations")
-  (migrations/migrate! (:migrations config))
-  (timbre/log :info "Starting server in development mode")
-  (swap! state (server/run-dmc #'entry-point)))
+(defn stop
+  []
+  (when-not (nil? system)
+    (alter-var-root #'system component/stop)))
 
-(defn start-server!
-  [state config]
-  (let [prod? (:prod config)]
-    (if prod?
-      (start-production-server! state config)
-      (start-development-server! state config))))
+(defn start
+  []
+  (when-not (nil? system)
+    (alter-var-root #'system component/start)))
+
+(defn init
+  []
+  (stop)
+  (alter-var-root #'system (fn [_] (new-system))))
+
+(defn go
+  []
+  (init)
+  (start))
+
+(defn reset
+  []
+  (refresh :after 'bartleby.core/go))
 
 (defn schedule-shutdown!
-  [state]
-  (letfn [(stop-server! []
-            (log :info "Stopping server")
-            (swap! state server/stop)
-            (log :info "Server stopped"))]
-    (Thread. stop-server!)))
+  [sys]
+  (letfn [(stop-and-log []
+            (log :info "Stopping system")
+            (stop)
+            (log :info "System stopped"))]
+    (Thread. stop-and-log)))
+
 
 (defn -main 
   [& args]
-  (let [the-server (atom nil)
-        config (load-config)]
-    (.addShutdownHook (Runtime/getRuntime) (schedule-shutdown! the-server))
-    (start-server! the-server config)))
+  (let [sys (new-system)]
+    (.addShutdownHook (Runtime/getRuntime) (schedule-shutdown! sys))
+    (log :info "Starting system")
+    (go)
+    (log :info "System started")))
