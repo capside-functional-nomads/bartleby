@@ -24,7 +24,11 @@
                  [buddy/buddy-auth "1.4.1"]
                  [clj-time "0.13.0"]
                  [clj-http "2.3.0"]
-                 [cheshire "5.7.0"]]
+                 [cheshire "5.7.0"]
+                 [org.clojure/clojurescript "1.9.229"]
+                 [reagent "0.6.0"]
+                 [re-frame "0.9.1"]]
+  :plugins [[lein-cljsbuild "1.1.5"]]
   :main bartleby.core
   ;;:main ^:skip-aot bartleby.core
   :target-path "target/%s"
