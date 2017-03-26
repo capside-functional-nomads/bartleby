@@ -30,6 +30,7 @@
                  [reloaded.repl "0.2.3"]
                  [org.clojure/tools.namespace "0.2.11"]
                  [org.clojure/clojurescript "1.9.229"]
+                 [binaryage/devtools  "0.9.2"]
                  [reagent "0.6.0"]
                  [re-frame "0.9.1"]]
   :main bartleby.core
