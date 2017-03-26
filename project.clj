@@ -28,10 +28,28 @@
                  [clj-http "2.3.0"]
                  [cheshire "5.7.0"]
                  [reloaded.repl "0.2.3"]
-                 [org.clojure/tools.namespace "0.2.11"]]
+                 [org.clojure/tools.namespace "0.2.11"]
+                 [org.clojure/clojurescript "1.9.229"]
+                 [reagent "0.6.0"]
+                 [re-frame "0.9.1"]]
   :main bartleby.core
   ;;:main ^:skip-aot bartleby.core
+  :profiles {:dev {:resource-paths ["config/dev"]
+                   :cljsbuild {:builds [{:source-paths ["src/cljs"]
+                                         :compiler {:main bartleby.core
+                                                    :output-to "resources/public/js/compiled/app.js"
+                                                    :output-dir "resources/public/js/compiled/out"
+                                                    :asset-path "js/compiled/out"
+                                                    :source-map-timestamp true
+                                                    :preloads [devtools.preload]
+                                                    :external-config {:devtools/config {:features-to-install :all}}}}]}}
+             :prod {:resource-paths ["config/prod"]
+                    :cljsbuild {:builds [{:source-paths ["src/cljs"]
+                                          :compiler {:main bartleby.core
+                                                     :output-to "resources/public/js/compiled/app.js"
+                                                     :optimizations :advanced
+                                                     :pretty-print false
+                                                     :source-map-timestamp true}}]}}
+             :uberjar {:aot :all}}
   :target-path "target/%s"
-  :profiles {:dev {:resource-paths ["config/dev"]}
-             :prod {:resource-paths ["config/prod"]}
-             :uberjar {:aot :all}})
+  :plugins [[lein-cljsbuild "1.1.5"]])

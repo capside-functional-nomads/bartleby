@@ -28,13 +28,12 @@
    (DELETE "/tasks/:id" [id]
      (http-resp/not-implemented "not implemented"))
    (PATCH "/tasks/:id" [id]
-          (http-resp/not-implemented "not implemented"))))
-
+     (http-resp/not-implemented "not implemented"))))
 
 (defn entry-point
   [db-con]
   (routes
-   (GET "/" [] 
+   (GET "/" []
      (resp/resource-response "index.html" {:root "public"}))
    (-> (api db-con)
        (wrap-json-body {:keywords? true :bigdecimals? true})
