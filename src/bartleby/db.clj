@@ -13,7 +13,7 @@
 (defprotocol HasDataSource
   (get-datasource [this]))
 
-(defrecord DBCon [host dbname username password migrate migrations-dir cp]
+(defrecord DBCon [host dbname username password cp]
   component/Lifecycle
   (start [component]
     (log :info "Connecting to db")
@@ -33,9 +33,7 @@
   (map->DBCon {:host (:host config)
                :username (:username config)
                :password (:password config)
-               :dbname (:name config)
-               :migrate (:migrate config)
-               :migrations-dir (:migrations-dir config)}))
+               :dbname (:name config)}))
 
 (hugsql/def-db-fns "sql/queries.sql")
   
