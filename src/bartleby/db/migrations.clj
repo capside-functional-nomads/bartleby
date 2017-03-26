@@ -1,16 +1,43 @@
 (ns bartleby.db.migrations
-  (:require [migratus.core :as migratus]))
+  (:require [migratus.core :as migratus]
+            [com.stuartsierra.component :as component]
+            [taoensso.timbre :refer [log]]))
 
+(defrecord Migrator [host dbname username password migrations-dir]
+  component/Lifecycle
+  (start [component]
+    (log :info "Performing DB migrations")
+    (let [config {:store :database
+                  :migration-dir migrations-dir
+                  :db {:classname "org.postgresql.Driver"
+                       :subprotocol "postgresql"
+                       :subname (format "//%s/%s" host dbname)
+                       :username username
+                       :password password}}]
+      (migratus/migrate config)
+      (log :info "Migrations completed")
+      component))
+  (stop [component]
+    component))
+
+(defn migrator
+  [config]
+  (map->Migrator {:host (:host config)
+                  :dbname (:name config)
+                  :username (:username config)
+                  :password (:password config)
+                  :migrations-dir (:migrations-dir config)}))
+ 
 (defn- config->migratus-params
   [config]
   {:store :database
    :migration-dir (:migrations-dir config)
    :db {:classname "org.postgresql.Driver"
         :subprotocol "postgresql"
-        :subname (format "//%s/%s" (:db-host config) (:db-name config))
-        :user (:db-user config)
-        :password (:db-password config)}})
-  
+        :subname (format "//%s/%s" (:host config) (:name config))
+        :username (:username config)
+        :password (:password config)}})
+
 (defn migrate!
   [config]
   (migratus/migrate (config->migratus-params config)))
