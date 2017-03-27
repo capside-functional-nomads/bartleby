@@ -32,7 +32,8 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [binaryage/devtools  "0.9.2"]
                  [reagent "0.6.0"]
-                 [re-frame "0.9.1"]]
+                 [re-frame "0.9.1"]
+                 [cljs-http "0.1.42"]]
   :main bartleby.core
   ;;:main ^:skip-aot bartleby.core
   :profiles {:dev {:resource-paths ["config/dev"]
