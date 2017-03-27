@@ -1,6 +1,10 @@
 {:prod false
- :migrations {:migrations-dir "migrations"
-              :db-host "localhost"
-              :db-name "fakere"
-              :db-user "fakere"
-              :db-password "fakere"}}
+ :db {:host "localhost"
+      :name "bartleby"
+      :username "bartleby"
+      :password "bartleby"}
+ :migrator {:migrations-dir "migrations"
+            :host "localhost"
+            :name "bartleby"
+            :username "bartleby"
+            :password "bartleby"}}
