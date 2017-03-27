@@ -1,0 +1,15 @@
+version: '3'
+volumes:
+  pgdata-vol:
+services:
+  database:
+    container_name: db
+    ports:
+     - "5432:5432"
+    volumes:
+     - pgdata-vol:/var/lib/postgresql/data
+    image: "postgres:9.6-alpine"
+    environment:
+      - POSTGRES_USER=pgadmin
+      - POSTGRES_PASSWORD=pgadmin
+      
