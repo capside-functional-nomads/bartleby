@@ -12,7 +12,7 @@
                   :db {:classname "org.postgresql.Driver"
                        :subprotocol "postgresql"
                        :subname (format "//%s/%s" host dbname)
-                       :username username
+                       :user username
                        :password password}}]
       (migratus/migrate config)
       (log :info "Migrations completed")
