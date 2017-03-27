@@ -16,14 +16,20 @@
 (defrecord DBCon [host dbname username password cp]
   component/Lifecycle
   (start [component]
-    (log :info "Connecting to db")
-    (let [pool-spec (make-pool-spec host dbname username password)
-          pool (make-datasource pool-spec)]
-      (assoc component :cp pool)))
+    (if-not cp
+      (do
+        (log :info "Connecting to db")
+        (let [pool-spec (make-pool-spec host dbname username password)
+              pool (make-datasource pool-spec)]
+          (assoc component :cp pool)))
+      component))
   (stop [component]
-    (log :info "Dropping connection to db")
-    (close-datasource cp)
-    (assoc component :cp nil))
+    (if cp
+      (do
+        (log :info "Dropping connection to db:" cp)
+        (close-datasource cp)
+        (assoc component :cp nil))
+      component))
   HasDataSource
   (get-datasource [component]
     {:datasource cp}))
