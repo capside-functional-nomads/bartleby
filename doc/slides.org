@@ -17,36 +17,6 @@ _fill-in-the-blanks_ mode.
    - =bare-bones= web infrastructure in place. No features.
    - =starting-point= sample features implemented.
 
-** Agenda
-
-   - Show the starting point (=starting-point= tag) while explaining
-     - Recap of LISP/clojure syntax
-     - Recap of lists, vectors and maps
-     - Functions and destructuring
-     - Namespaces
-     - Your first 10' with web apps in clojure
-       - ring apps from =bare-bones=
-       - compojure from =starting-point=
-     - Your first 10' with clojurescript and re-frame (from =starting-point=)
-     - Q&A
-     - Code the features:
-       - Create a new task
-       - Mark a task as completed
-       - Delete a task
-
-* Starting
-
-  1. clone the repo
-  2. start the database
-  3. =lein trampoline run=
-  4. Implement the user stories 
-
-
-* Reference
-
-  - [[https://github.com/ring-clojure/ring/wiki/Concepts][Ring concepts]]
-
-
 * Recap: LISP, clojure syntax
 
 ** Function application
@@ -123,7 +93,7 @@ _fill-in-the-blanks_ mode.
 
 ** Lexical scoping
 
-   - In clojure we normally do not use _global_ items
+   - In clojure we normally do not use _global_ names to refer to values
    - Functions use lexical contexts to define auxiliar symbols
 
   #+begin_src clojure :eval never
@@ -132,19 +102,122 @@ _fill-in-the-blanks_ mode.
       (let [double-x (* 2 x)
             triple-y (* 3 y)]
         (+ double-x triple-y)))
-        
   #+end_src
 
 ** Destructuring
 
+   #+begin_src clojure :eval never
+     (defn swap-pair
+       [pair]
+       (let [f (first pair)
+             s (second pair)]
+         [s f]))
 
-* Recap: Lists, vectors and maps
+     (defn swap-pair-2
+       [pair]
+       (let [[x y] pair]
+         [y x]))
 
-* Functions and descructuring
+     (defn swap-pair-3
+       [[x y]]
+       [y x])
+   #+end_src
+
+** Destructuring II
+
+   #+begin_src clojure :eval never
+     (let [{x :a} {:a 1}]
+       x)
+
+     ;;=> 1
+   #+end_src
 
 * Namespaces
 
-* DB Setup
+  - Functions belong to namespaces
+  - Default namespace =user=
 
-  create user fakere with login, encrypted password 'fakere';
-  create database fakere with owner=fakere,encoding=utf8;
+   #+begin_src clojure :eval never
+     ;; show-ns
+     ,*ns*
+     ;; change ns and define function
+     (ns new-ns)
+
+     (defn msg
+       [x]
+       (str "This is a message: " msg))
+
+     (ns user)
+     (new-ns/msg "hey!!")
+     ;;=>"Tis is a message: hey!!"
+
+
+   #+end_src
+
+** Including symbols from another namespace
+
+   #+begin_src clojure :eval never
+     ;; from REPL
+
+     (require '[clojure.string :as string])
+     (string/reverse "hola")
+     ;;=>"aloh"
+     (require '[clojure.string :refer [reverse]])
+     (reverse "hola")
+     ;;=>"aloh"
+   #+end_src
+
+** Namespaces and files
+
+   
+   #+begin_src clojure :eval never
+     ;; in the bartleby project, the src root is in src
+     ;; the bartleby.core namespace is in src/bartleby/core.clj
+
+     (ns bartleby.core
+       (:require [clojure.string :as string]))
+
+     ;; string/reverse is available in the whole namespace
+     ;; notice the slightly different syntax
+
+   #+end_src
+
+   - Namespaces with dash map to files with underscore
+   
+
+
+* Setup
+
+  #+begin_src bash :eval never
+    cd docker
+    docker-compose up -d
+    docker-compose exec database psql -U pgadmin
+  #+end_src
+
+  #+begin_src sql :eval never
+    create user bartleby with login encrypted password bartleby;
+    create database bartleby with owner=bartleby encoding=utf8;
+  #+end_src
+
+* Coding
+
+  
+  #+begin_src bash :eval never
+
+  cp config/dev/config.edn.sample config/dev/config.edn
+  lein repl
+  (go)
+  (stop)
+
+  #+end_src
+
+* Let's review some of the code
+
+  - checkout the =bare-bones= tag
+  - We will review some code
+  - Go to the =starting-point= tag
+  - We will start from there
+
+* And that was all
+
+  Thank you!

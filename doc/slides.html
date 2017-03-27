@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>3rd Session: a working program</title>
+<meta name="author" content="(Pau Cervera & Cristobal Garcia)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">3rd Session: a working program</h1><h2 class="author">Pau Cervera &amp; Cristobal Garcia</h2><p class="date">Created: 2017-03-27 Mon 16:36</p>
+</section>
+<section id="table-of-contents">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#/slide-org8e98a40">Intro</a>
+<ul>
+<li><a href="#/slide-orgaa103f6">Repo structure</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orge862866">Recap: LISP, clojure syntax</a>
+<ul>
+<li><a href="#/slide-org3b25057">Function application</a></li>
+<li><a href="#/slide-org6426ea7">Conditionals</a></li>
+<li><a href="#/slide-orge758222">Lists</a></li>
+<li><a href="#/slide-org1091f13">Vectors</a></li>
+<li><a href="#/slide-org9fb1acc">Maps</a></li>
+<li><a href="#/slide-org7246906">Defining functions</a></li>
+<li><a href="#/slide-org3ef8e5c">Lexical scoping</a></li>
+<li><a href="#/slide-orgb8e2fe6">Destructuring</a></li>
+<li><a href="#/slide-orgf8fb4c3">Destructuring II</a></li>
+</ul>
+</li>
+<li><a href="#/slide-org237495a">Namespaces</a>
+<ul>
+<li><a href="#/slide-org1fc548f">Including symbols from another namespace</a></li>
+<li><a href="#/slide-org0aadc6d">Namespaces and files</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgffb623a">Setup</a></li>
+<li><a href="#/slide-org6bad8e9">Coding</a></li>
+<li><a href="#/slide-orgd94d02e">Let's review some of the code</a></li>
+<li><a href="#/slide-orged05b76">And that was all</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+
+<section>
+<section id="slide-org8e98a40">
+<h2 id="org8e98a40">Intro</h2>
+<p>
+To implement a small single-user TO-DO list as a web application. To be able
+to focus on learning, we will use the provided skeleton app and work in
+<span class="underline">fill-in-the-blanks</span> mode.
+</p>
+
+</section>
+<section id="slide-orgaa103f6">
+<h3 id="orgaa103f6">Repo structure</h3>
+<p>
+The <a href="https://github.com/capside-functional-nomads/bartleby">repo</a> has some intereting tags
+</p>
+
+<ul>
+<li><code>bare-bones</code> web infrastructure in place. No features.</li>
+<li><code>starting-point</code> sample features implemented.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orge862866">
+<h2 id="orge862866">Recap: LISP, clojure syntax</h2>
+<div class="outline-text-2" id="text-orge862866">
+</div></section>
+<section id="slide-org3b25057">
+<h3 id="org3b25057">Function application</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">;; function application
+(+ 1 1)
+;;=&gt; 2
+
+(first '(1 2 3))
+;;=&gt; 1
+</pre>
+</div>
+
+</section>
+<section id="slide-org6426ea7">
+<h3 id="org6426ea7">Conditionals</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(&gt; 2 1)
+;;=&gt; true
+(&gt; 2 2)
+;;=&gt; false
+(nil? 1)
+;;=&gt; false
+(nil? nil)
+;;=&gt; true
+(if (nil? 1) "1 is nil!" "Good!")
+;;=&gt;"Good!"
+(when (nil? 1) "1 is nil!")
+;;=&gt;nil
+</pre>
+</div>
+
+</section>
+<section id="slide-orge758222">
+<h3 id="orge758222">Lists</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">'(1 2 3)
+(first '(1 2 3))
+;;=&gt; 1
+(rest '(1 2 3))
+;;=&gt; (2 3)
+(conj '(1 2) 3)
+;;=&gt; (3 1 2)
+</pre>
+</div>
+
+</section>
+<section id="slide-org1091f13">
+<h3 id="org1091f13">Vectors</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">[1 2 3]
+(first [1 2 3])
+;;=&gt; 1
+(rest [1 2 3])
+;;=&gt; [2 3]
+(conj [1 2] 3)
+;;=&gt; [1 2 3]
+</pre>
+</div>
+
+</section>
+<section id="slide-org9fb1acc">
+<h3 id="org9fb1acc">Maps</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">{:a 1 :b "2"}
+(:a {:a 1 :b "2"})
+;;=&gt;1
+(:c {:a 1 :b "2"})
+;;=&gt;nil
+(conj {:a 1 :b "2"} [:c 'tres])
+;;=&gt;{:a 1 :b "2" :c tres}
+</pre>
+</div>
+
+</section>
+<section id="slide-org7246906">
+<h3 id="org7246906">Defining functions</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(defn add-2
+  [x]
+  (+ x 2))
+</pre>
+</div>
+
+</section>
+<section id="slide-org3ef8e5c">
+<h3 id="org3ef8e5c">Lexical scoping</h3>
+<ul>
+<li>In clojure we normally do not use <span class="underline">global</span> names to refer to values</li>
+<li>Functions use lexical contexts to define auxiliar symbols</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(defn strange-math-op
+  [x y]
+  (let [double-x (* 2 x)
+	triple-y (* 3 y)]
+    (+ double-x triple-y)))
+</pre>
+</div>
+
+</section>
+<section id="slide-orgb8e2fe6">
+<h3 id="orgb8e2fe6">Destructuring</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(defn swap-pair
+  [pair]
+  (let [f (first pair)
+	s (second pair)]
+    [s f]))
+
+(defn swap-pair-2
+  [pair]
+  (let [[x y] pair]
+    [y x]))
+
+(defn swap-pair-3
+  [[x y]]
+  [y x])
+</pre>
+</div>
+
+</section>
+<section id="slide-orgf8fb4c3">
+<h3 id="orgf8fb4c3">Destructuring II</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">(let [{x :a} {:a 1}]
+  x)
+
+;;=&gt; 1
+</pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org237495a">
+<h2 id="org237495a">Namespaces</h2>
+<ul>
+<li>Functions belong to namespaces</li>
+<li><p>
+Default namespace <code>user</code>
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-clojure">;; show-ns
+*ns*
+;; change ns and define function
+(ns new-ns)
+
+(defn msg
+  [x]
+  (str "This is a message: " msg))
+
+(ns user)
+(new-ns/msg "hey!!")
+;;=&gt;"Tis is a message: hey!!"
+</pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org1fc548f">
+<h3 id="org1fc548f">Including symbols from another namespace</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">;; from REPL
+
+(require '[clojure.string :as string])
+(string/reverse "hola")
+;;=&gt;"aloh"
+(require '[clojure.string :refer [reverse]])
+(reverse "hola")
+;;=&gt;"aloh"
+</pre>
+</div>
+
+</section>
+<section id="slide-org0aadc6d">
+<h3 id="org0aadc6d">Namespaces and files</h3>
+<div class="org-src-container">
+
+<pre  class="src src-clojure">;; in the bartleby project, the src root is in src
+;; the bartleby.core namespace is in src/bartleby/core.clj
+
+(ns bartleby.core
+  (:require [clojure.string :as string]))
+
+;; string/reverse is available in the whole namespace
+;; notice the slightly different syntax
+</pre>
+</div>
+
+<ul>
+<li>Namespaces with dash map to files with underscore</li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgffb623a">
+<h2 id="orgffb623a">Setup</h2>
+<div class="org-src-container">
+
+<pre  class="src src-bash">cd docker
+docker-compose up -d
+docker-compose exec database psql -U pgadmin
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-sql">create user bartleby with login encrypted password bartleby;
+create database bartleby with owner=bartleby encoding=utf8;
+</pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org6bad8e9">
+<h2 id="org6bad8e9">Coding</h2>
+<div class="org-src-container">
+
+<pre  class="src src-bash">cp config/dev/config.edn.sample config/dev/config.edn
+lein repl
+(go)
+(stop)
+</pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd94d02e">
+<h2 id="orgd94d02e">Let's review some of the code</h2>
+<ul>
+<li>checkout the <code>bare-bones</code> tag</li>
+<li>We will review some code</li>
+<li>Go to the <code>starting-point</code> tag</li>
+<li>We will start from there</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orged05b76">
+<h2 id="orged05b76">And that was all</h2>
+<p>
+Thank you!
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
