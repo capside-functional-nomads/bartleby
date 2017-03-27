@@ -1,5 +1,7 @@
-#+title: 3rd session
-#+subtitle: faKere, a functional to-do list
+#+title: 3rd Session: a working program
+#+author: Pau Cervera & Cristobal Garcia
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+OPTIONS: num:nil
 
 
 * Intro
@@ -10,7 +12,7 @@ _fill-in-the-blanks_ mode.
 
 ** Repo structure
 
-   The repo has some intereting tags
+   The [[https://github.com/capside-functional-nomads/bartleby][repo]] has some intereting tags
 
    - =bare-bones= web infrastructure in place. No features.
    - =starting-point= sample features implemented.
@@ -45,10 +47,96 @@ _fill-in-the-blanks_ mode.
   - [[https://github.com/ring-clojure/ring/wiki/Concepts][Ring concepts]]
 
 
-
-
-
 * Recap: LISP, clojure syntax
+
+** Function application
+
+  #+begin_src clojure :eval never
+  ;; function application
+  (+ 1 1)
+  ;;=> 2
+
+  (first '(1 2 3))
+  ;;=> 1
+  #+end_src
+
+** Conditionals
+
+  #+begin_src clojure :eval never
+    (> 2 1)
+    ;;=> true
+    (> 2 2)
+    ;;=> false
+    (nil? 1)
+    ;;=> false
+    (nil? nil)
+    ;;=> true
+    (if (nil? 1) "1 is nil!" "Good!")
+    ;;=>"Good!"
+    (when (nil? 1) "1 is nil!")
+    ;;=>nil
+  #+end_src
+
+** Lists
+  
+  #+begin_src clojure :eval never
+  '(1 2 3)
+  (first '(1 2 3))
+  ;;=> 1
+  (rest '(1 2 3))
+  ;;=> (2 3)
+  (conj '(1 2) 3)
+  ;;=> (3 1 2)
+  #+end_src
+
+** Vectors
+
+  #+begin_src clojure :eval never
+  [1 2 3]
+  (first [1 2 3])
+  ;;=> 1
+  (rest [1 2 3])
+  ;;=> [2 3]
+  (conj [1 2] 3)
+  ;;=> [1 2 3]
+  #+end_src
+
+** Maps
+
+  #+begin_src clojure :eval never
+  {:a 1 :b "2"}
+  (:a {:a 1 :b "2"})
+  ;;=>1
+  (:c {:a 1 :b "2"})
+  ;;=>nil
+  (conj {:a 1 :b "2"} [:c 'tres])
+  ;;=>{:a 1 :b "2" :c tres}
+  #+end_src
+
+** Defining functions
+
+  #+begin_src clojure :eval never
+    (defn add-2
+      [x]
+      (+ x 2))
+  #+end_src
+
+** Lexical scoping
+
+   - In clojure we normally do not use _global_ items
+   - Functions use lexical contexts to define auxiliar symbols
+
+  #+begin_src clojure :eval never
+    (defn strange-math-op
+      [x y]
+      (let [double-x (* 2 x)
+            triple-y (* 3 y)]
+        (+ double-x triple-y)))
+        
+  #+end_src
+
+** Destructuring
+
 
 * Recap: Lists, vectors and maps
 
