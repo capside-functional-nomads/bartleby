@@ -36,7 +36,11 @@
   :main bartleby.core
   ;;:main ^:skip-aot bartleby.core
   :profiles {:dev {:resource-paths ["config/dev"]
-                   :cljsbuild {:builds [{:source-paths ["src/cljs"]
+                   :plugins      [[lein-figwheel "0.5.9"]]
+                   :dependencies [[binaryage/devtools "0.8.2"]]
+                   :cljsbuild {:builds [{:id "dev"
+                                         :source-paths ["src/cljs"]
+                                         :figwheel     {:on-jsload "bartleby.core/mount-root"}
                                          :compiler {:main bartleby.core
                                                     :output-to "resources/public/js/compiled/app.js"
                                                     :output-dir "resources/public/js/compiled/out"
@@ -44,7 +48,8 @@
                                                     :source-map-timestamp true
                                                     :preloads [devtools.preload]
                                                     :external-config {:devtools/config {:features-to-install :all}}}}]}}
-             :prod {:resource-paths ["config/prod"]
+             :prod {:id "prod"
+                    :resource-paths ["config/prod"]
                     :cljsbuild {:builds [{:source-paths ["src/cljs"]
                                           :compiler {:main bartleby.core
                                                      :output-to "resources/public/js/compiled/app.js"
