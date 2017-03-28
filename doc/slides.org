@@ -18,7 +18,7 @@ _fill-in-the-blanks_ mode.
    - =starting-point= sample features implemented.
 
 * Recap: LISP, clojure syntax
-
+  
 ** Function application
 
   #+begin_src clojure :eval never
@@ -210,6 +210,54 @@ _fill-in-the-blanks_ mode.
   (stop)
 
   #+end_src
+
+* Frontend working environment
+  To start the frontend working environment, open another shell
+  and, while the server is running (see previous point), start
+  figwheel with the following command:
+
+  #+begin_src bash :eval never
+
+  lein with-profile dev figwheel
+
+  #+end_src
+
+  At this point, figwheel will compile all cljs code to a JavaScript
+  and put it on the js folder under `resources/public/`. Now, point
+  your browser to [http://localhost:8080](http://localhost:8080) and
+  the repl will become active.
+
+  Test the connection between the browser and the repl with:
+
+  #+begin_src clojure :eval never
+
+  dev:cljs.user=> (js/alert "I would prefer not to")
+
+  #+end_src
+
+  this whill cause an alert pop up in the browser. Open the developer 
+  tools and try:
+
+  #+begin_src clojure :eval never
+
+  dev:cljs.user=> (.info js/console "I would prefer not to")
+
+  #+end_src
+
+** Change the frontend
+
+   Now, let's change the frontend code. Change the function `main-view` from *core.cljs*
+   to:
+
+  #+begin_src clojure :eval never
+
+  (defn main-view []
+  [:div
+   [:h1 "Bartleby, the scrivener]])
+
+  #+end_src
+
+  you will see the changes immediately applied to the browser.
 
 * Let's review some of the code
 
