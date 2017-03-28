@@ -195,7 +195,7 @@ _fill-in-the-blanks_ mode.
   #+end_src
 
   #+begin_src sql :eval never
-    create user bartleby with login encrypted password bartleby;
+    create user bartleby with login encrypted password 'bartleby';
     create database bartleby with owner=bartleby encoding=utf8;
   #+end_src
 
