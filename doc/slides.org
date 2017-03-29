@@ -265,6 +265,7 @@ _fill-in-the-blanks_ mode.
   - We will review some code
   - Go to the =starting-point= tag
   - We will start from there
+  - Go to the =starting-point-cljs= tag to start with the cljs infrastructur
 
 * And that was all
 
