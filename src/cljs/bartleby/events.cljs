@@ -33,3 +33,12 @@
  (fn [db [_ tasks]]
    (.info js/console "tasks loaded")
    (assoc db :tasks tasks)))
+
+(re-frame/reg-event-db
+ :task-toggle-done
+ (fn [db [_ id done]]
+   (assoc db :tasks (map (fn [task]
+                           (if (= (:id task) id)
+                             {:id id :description (:description task) :done done}
+                             task))
+                         (:tasks db)))))

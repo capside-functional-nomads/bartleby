@@ -2,26 +2,18 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
-            [bartleby.events]))
-
-#_(defn dev-setup []
-  (when config/debug?
-    (enable-console-print!)
-    (println "dev mode")))
-
-(defn main-view []
-  [:div
-   [:h1 "Todo app"]
-   [:p "Bartleby the scrivener, you know"]])
+            [bartleby.events]
+            [bartleby.subs :as subs]
+            [bartleby.view :refer [ui]]))
 
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
-  (reagent/render main-view
+  (reagent/render ui
                   (.getElementById js/document "app")))
 
 (defn ^:export init[]
   (re-frame/dispatch-sync [:initialize-db])
-  #_(dev-setup)
+  (re-frame/dispatch [:load-tasks])
   (mount-root))
 
 (defn ^:export load-tasks[]
