@@ -6,3 +6,9 @@
  :tasks
  (fn [db _]
    (:tasks db)))
+
+(re-frame/reg-sub
+ :rest
+ (fn [db _]
+   (:rest db)))
+
