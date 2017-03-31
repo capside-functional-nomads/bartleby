@@ -39,7 +39,9 @@
   ;;:main ^:skip-aot bartleby.core
   :profiles {:dev {:resource-paths ["config/dev"]
                    :plugins      [[lein-figwheel "0.5.9"]]
-                   :dependencies [[binaryage/devtools "0.8.2"]]
+                   :dependencies [[binaryage/devtools "0.8.2"]
+                                  [figwheel-sidecar "0.5.4-6"]
+                                  [com.cemerick/piggieback "0.2.1"]]
                    :cljsbuild {:builds [{:id "dev"
                                          :source-paths ["src/cljs"]
                                          :figwheel     {:on-jsload "bartleby.core/mount-root"}
