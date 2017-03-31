@@ -23,8 +23,10 @@
 
 (defn main-view []
   (let [tasks (re-frame/subscribe [:tasks])
+        rest-status (re-frame/subscribe [:rest])
         remaining (filter (fn [t] (not (:done t))) @tasks)]
     [:div
+     [:p @rest-status]
      [:h1 "Remaining tasks"]
      [:div.list-group
       (map todo-item @tasks)]
