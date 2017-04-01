@@ -22,20 +22,52 @@
                  :on-success [:http-req-ok]
                  :on-failure [:http-req-error]}}))
 
+(re-frame/reg-event-fx
+ :complete-task
+ (fn [_ id]
+   {:http-xhrio {:method :patch
+                 :uri (str "/tasks/" id)
+                 :params {:done true}
+                 :timeout 5000
+                 :format (ajax/json-request-format)
+                 :response-format (ajax/json-response-format {:keywords? true})
+                 :on-success [:http-complete-ok]
+                 :on-failure [:http-complete-error]}}))
+
+(re-frame/reg-event-fx
+ :http-complete-ok
+ (fn [{:keys [db]} _]
+   {:db (-> db
+            (update :rest conj {:status :ok :message "Task completed"})
+            (update :rest #(take 10 %))
+            (update :rest vec))
+    :dispatch [:load-tasks]}))
+
+(re-frame/reg-event-db
+ :http-complete-error
+ (fn [db [_ result]]
+    (-> db
+        (update :rest conj {:status :error
+                           :message (str "Task not completed:" (:last-error result))})
+        (update :rest #(take 10 %))
+        (update :rest vec))))
+
 (re-frame/reg-event-db
  :http-req-ok
  (fn [db [_ result]]
    (-> db
        (assoc :tasks result)
        (update :rest conj {:status :ok :message ""})
-       (update :rest #(take 10 %)))))
+       (update :rest #(take 10 %))
+       (update :rest vec))))
 
 (re-frame/reg-event-db
  :http-req-error
  (fn [db [_ result]]
     (-> db
         (update :rest conj {:status :error :message result})
-        (update :rest #(take 10 %)))))
+        (update :rest #(take 10 %))
+        (update :rest vec))))
 
 (re-frame/reg-event-db
  :close-alert

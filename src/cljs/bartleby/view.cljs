@@ -8,7 +8,8 @@
 
 (defn task-clicked [task]
   (.info js/console "Clicked task" (:id task))
-  (re-frame/dispatch [:task-toggle-done (:id task) (not (:done task))]))
+  (re-frame/dispatch [:complete-task (:id task)]))
+;;  (re-frame/dispatch [:task-toggle-done (:id task) (not (:done task))]))
 
 (defn todo-item
   [{id :id desc :description done :done :as task}]
