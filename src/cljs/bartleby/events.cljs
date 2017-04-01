@@ -24,7 +24,7 @@
 
 (re-frame/reg-event-fx
  :complete-task
- (fn [_ id]
+ (fn [_ [_ id]]
    {:http-xhrio {:method :patch
                  :uri (str "/tasks/" id)
                  :params {:done true}
