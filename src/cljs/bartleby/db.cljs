@@ -2,5 +2,5 @@
 
 (def default-db
   "Default state"
-  {:rest ""
+  {:rest nil
    :tasks []})
