@@ -5,6 +5,7 @@
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
             [compojure.core :refer :all]
             [compojure.route :as route]
+            [compojure.coercions :refer [as-int]]
             [bartleby.db :as db]))
 
 (defn other-implementation-of-status
@@ -27,8 +28,9 @@
      (http-resp/not-implemented "not implemented"))
    (DELETE "/tasks/:id" [id]
      (http-resp/not-implemented "not implemented"))
-   (PATCH "/tasks/:id" [id]
-     (http-resp/not-implemented "not implemented"))))
+   (PATCH "/tasks/:id" [id :<< as-int]
+     (db/complete-task db-con {:id id})
+     (http-resp/ok {:status :ok}))))
 
 (defn entry-point
   [db-con]
