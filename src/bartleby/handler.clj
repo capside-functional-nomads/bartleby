@@ -19,7 +19,7 @@
    (GET "/status" []
      (http-resp/ok {:status :ok}))
    (GET "/tasks/" []
-     (let [tasks (db/find-all-tasks db-con)]
+     (let [tasks (db/find-incomplete-tasks db-con)]
        (http-resp/ok tasks)))
    (GET "/tasks/:id" [id]
      (http-resp/not-implemented "not implemented"))
