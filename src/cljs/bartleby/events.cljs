@@ -15,8 +15,7 @@
 (re-frame/reg-event-fx
  :load-tasks
  (fn [{:keys [db]} _]
-   {:db (assoc db :rest "in progress")
-    :http-xhrio {:method :get
+   {:http-xhrio {:method :get
                  :uri "/tasks/"
                  :timeout 5000
                  :response-format (ajax/json-response-format {:keywords? true})
@@ -26,13 +25,23 @@
 (re-frame/reg-event-db
  :http-req-ok
  (fn [db [_ result]]
-   (merge db {:tasks result
-              :rest "ok"})))
+   (-> db
+       (assoc :tasks result)
+       (update :rest conj {:status :ok :message ""})
+       (update :rest #(take 10 %)))))
 
 (re-frame/reg-event-db
  :http-req-error
  (fn [db [_ result]]
-   (merge db {:rest "error"})))
+    (-> db
+        (update :rest conj {:status :error :message result})
+        (update :rest #(take 10 %)))))
+
+(re-frame/reg-event-db
+ :close-alert
+ (fn [db [_ idx]]
+   (-> db
+       (update :rest #(vec (concat (subvec % 0 idx) (subvec % (inc idx))))))))
 
 (re-frame/reg-event-db
  :task-toggle-done

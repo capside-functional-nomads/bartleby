@@ -1,6 +1,8 @@
 (ns bartleby.view
   (:require [reagent.core :as reagent]
             [re-frame.core :as re-frame]
+            [goog.string :as gstring]
+            [goog.string.format]
             [bartleby.events]
             [bartleby.subs :as subs]))
 
@@ -21,18 +23,37 @@
       [:p "Bartleby, now you can proceed to lean about the Curry-Howard isomorphism"]
       [:p (str "Bartleby you've got " c " tasks left")])))
 
+(defn status-item
+  [idx item]
+  (let [alert-type (if (= (:status item) :error) "alert-danger" "alert-success")
+        heading (if (= (:status item) :error) "REST Error" "REST Ok")
+        text (:message item)]
+    [:row
+      {:key (gstring/format "status%02d" idx)}
+     [:div.alert.alert-dismissible
+      {:class alert-type
+       :role "alert" :on-click #(re-frame/dispatch [:close-alert idx])}
+      [:strong heading]
+      [:p text]]]))
+
+(defn statuses-list
+  []
+  (let [rest-statuses (re-frame/subscribe [:rest])]
+    [:div
+     (map-indexed status-item @rest-statuses)]))
+        
+
 (defn main-view []
   (let [tasks (re-frame/subscribe [:tasks])
         rest-status (re-frame/subscribe [:rest])
         remaining (filter (fn [t] (not (:done t))) @tasks)]
     [:div
-     [:p @rest-status]
      [:h1 "Remaining tasks"]
      [:div.list-group
       (map todo-item @tasks)]
      [bartleby-warning remaining]]))
 
-(defn layout [title content]
+(defn layout [title content status]
   [:div
    [:nav.navbarn.navbar-fixed-top.navbar-inverse
     [:div.container
@@ -49,7 +70,9 @@
    [:div.container-fluid
     [:div.row
      [:div.col-md-6.col-md-offset-3
-      [content]]]]])
+      [content]]
+     [:div.col-md-2.col-md-offset-1
+      [status]]]]])
 
 (defn ui[]
-  (layout "Bartleby" main-view))
+  (layout "Bartleby" main-view statuses-list))
